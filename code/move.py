@@ -10,6 +10,10 @@ class Mario():
         self.gasok = 0
         self.speed = 0
         self.right = True
+        self.onblock = True
+        self.dash = False
+        self.yy = 0
+        self.f = 0
         self.image = load_image('animation_sheet.png')
 
     def update(self):
@@ -17,36 +21,58 @@ class Mario():
             self.right = False
         elif self.speed > 0:
             self.right = True
-        
 
 
-        if self.speed != 0:
-            t = 0.5
-            self.x = (1-t) * self.x + t * (self.x + self.speed)
+
+
+        t = 0.5
+        self.x = (1-t) * self.x + t * (self.x + self.speed)
+        self.y = (1 - t) * self.y + t * (self.y + self.yy)
+        if self.y == 90:        #나중에 맵구현후에 발판 밟는 상황으로 변경
+            self.onblock = True
+        elif self.y > 90:       #마찬가지
+            self.onblock = False
+        if self.y > 90:
+            self.yy -= 30
+        elif self.onblock:
+            self.yy = 0
+
 
     def speed_update(self):
         self.frame = (self.frame + 1) % 8
-        if self.speed > 0:
-            self.speed -= 2
-        elif self.speed < 0:
-            self.speed += 2
+
         if self.gasok != 0:
-            if self.gasok > 12:
-                self.gasok = 12
-            elif self.gasok < -12:
-                self.gasok = -12
+            if self.gasok > 10:
+                self.gasok = 10
+            elif self.gasok < -10:
+                self.gasok = -10
             self.speed += self.gasok
-            if self.speed > 40:
-                self.speed = 40
-            elif self.speed < -40:
-                self.speed = -40
+            if mario.dash:
+                if self.speed > 60:
+                    self.speed = 60
+                elif self.speed < -60:
+                    self.speed = -60
+            else:
+                if self.speed > 40:
+                    self.speed = 40
+                elif self.speed < -40:
+                    self.speed = -40
+        else:
+            if self.speed > 0:
+                self.speed -= 5
+            elif self.speed < 0:
+                self.speed += 5
         print('spdup : speed = ')
         print(self.speed)
         print(self.gasok)
     def forward(self):
-        self.gasok += 6
+        self.gasok += 5
     def backward(self):
-        self.gasok -= 6
+        self.gasok -= 5
+
+    def jump(self):
+        self.yy = 120
+
 
     def draw(self):
         if self.speed == 0:
@@ -85,18 +111,27 @@ def handle_events():
             mario.forward()
             keydown = True
             pre = 1
+        elif event.key == SDLK_j:
+            if mario.onblock:
+                mario.jump()
+            keydown = True
+        elif event.key == SDLK_k:
+            if mario.dash:
+                mario.dash = False
+            else:
+                mario.dash = True
+
         elif event.type == SDL_KEYUP:
             keydown = False
 
-            print('asdfadfsafasfdfafsdafsad')
-        else:
+        elif event.key:
             if mario.gasok > 0:
-                mario.gasok -= 6
+                mario.gasok -= 5
             elif mario.gasok < 0:
-                mario.gasok += 6
+                mario.gasok += 5
 
 
-open_canvas()
+open_canvas(1280, 800)
 mario = Mario()
 grass = Grass()
 running = True
@@ -111,16 +146,19 @@ while running:
             mario.backward()
         elif pre == 1:
             mario.forward()
+        pass
     else:
         if mario.gasok > 0:
-            mario.gasok -= 6
+            mario.gasok -= 5
         elif mario.gasok < 0:
-            mario.gasok += 6
+            mario.gasok += 5
 
     clear_canvas()
     mario.draw()
     grass.draw()
     update_canvas()
+    mario.f = False
+    mario.b = False
     delay(0.05)
 
 close_canvas()
