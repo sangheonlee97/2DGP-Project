@@ -3,46 +3,62 @@ from pico2d import *
 keydown = False
 pre = 4
 
-class Boy():
-    global keydown
+class Mario():
     def __init__(self):
         self.x, self.y = 90, 90
         self.frame = 0
-        self.dash = 1
-        self.air = False
-        self.jump = False
-        self.xx, self.yy = 90, 90
-        self.image = load_image('run_animation.png')
+        self.gasok = 0
+        self.speed = 0
+        self.right = True
+        self.image = load_image('animation_sheet.png')
 
-    def update_r(self):
-        self.frame = (self.frame + 1) % 8
-        self.xx += 20
-    def update_l(self):
-        self.frame = (self.frame + 1) % 8
-        self.xx -= 20
-    def update_u(self):
-        self.frame = (self.frame + 1) % 8
-        self.yy += 500
-        #self.jump = True
-    def update_d(self):
-        self.frame = (self.frame + 1) % 8
-        self.yy -= 20
     def update(self):
-        if self.jump:
-            for i in range(0, 200, 20):
-                t = i / 100
-                tx, ty = self.x, self.y
+        if self.speed < 0:
+            self.right = False
+        elif self.speed > 0:
+            self.right = True
+        
 
-        else:
-            for i in range(0, 200, 20):
-                t = i / 100
-                tx, ty = self.x, self.y
-                self.x = (1-t) * tx + t * self.xx
-                self.y = (1-t) * ty + t * self.yy
+
+        if self.speed != 0:
+            t = 0.5
+            self.x = (1-t) * self.x + t * (self.x + self.speed)
+
+    def speed_update(self):
+        self.frame = (self.frame + 1) % 8
+        if self.speed > 0:
+            self.speed -= 2
+        elif self.speed < 0:
+            self.speed += 2
+        if self.gasok != 0:
+            if self.gasok > 12:
+                self.gasok = 12
+            elif self.gasok < -12:
+                self.gasok = -12
+            self.speed += self.gasok
+            if self.speed > 40:
+                self.speed = 40
+            elif self.speed < -40:
+                self.speed = -40
+        print('spdup : speed = ')
+        print(self.speed)
+        print(self.gasok)
+    def forward(self):
+        self.gasok += 6
+    def backward(self):
+        self.gasok -= 6
 
     def draw(self):
-        self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
-
+        if self.speed == 0:
+            if self.right:
+                self.image.clip_draw(self.frame * 100, 100 * 3, 100, 100, self.x, self.y)
+            else:
+                self.image.clip_draw(self.frame * 100, 100 * 2, 100, 100, self.x, self.y)
+        else:
+            if self.right:
+                self.image.clip_draw(self.frame * 100, 100 * 1, 100, 100, self.x, self.y)
+            else:
+                self.image.clip_draw(self.frame * 100, 100 * 0, 100, 100, self.x, self.y)
 
 class Grass():
     def __init__(self):
@@ -52,7 +68,7 @@ class Grass():
 
 def handle_events():
     global running
-    global boy
+    global mario
     global keydown
     global pre
     events = get_events()
@@ -61,76 +77,50 @@ def handle_events():
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_w:
-            boy.update_u()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_a:
+            mario.backward()
             keydown = True
             pre = 0
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_s:
-            boy.update_d()
-            keydown = True
-            pre = 2
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_a:
-            boy.update_l()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_d:
+            mario.forward()
             keydown = True
             pre = 1
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_d:
-            boy.update_r()
-            keydown = True
-            pre = 3
         elif event.type == SDL_KEYUP:
             keydown = False
 
-def update_character():
-    global boy
-    global keydown
-    if boy.jump:
-        boy.update()
-    else:
-        if boy.y > 90:
-            boy.yy -= 20
-        boy.update()
-        boy.draw()
-        update_canvas()
-        if keydown:
-            if pre == 0:
-                boy.update_u()
-                boy.update()
-                boy.draw()
-                update_canvas()
-            elif pre == 1:
-                boy.update_l()
-                boy.update()
-                boy.draw()
-                update_canvas()
-            elif pre == 2:
-                boy.update_d()
-                boy.update()
-                boy.draw()
-                update_canvas()
-            elif pre == 3:
-                boy.update_r()
-                boy.update()
-                boy.draw()
-                update_canvas()
+            print('asdfadfsafasfdfafsdafsad')
+        else:
+            if mario.gasok > 0:
+                mario.gasok -= 6
+            elif mario.gasok < 0:
+                mario.gasok += 6
 
 
-# xx yy는 내가 움직이는점 x,y좌표는 xx yy를 따라간다.
 open_canvas()
-
-boy = Boy()
+mario = Mario()
 grass = Grass()
-
 running = True
 
 
 while running:
     handle_events()
-
-    update_character()
+    mario.speed_update()
+    mario.update()
+    if keydown:
+        if pre == 0:
+            mario.backward()
+        elif pre == 1:
+            mario.forward()
+    else:
+        if mario.gasok > 0:
+            mario.gasok -= 6
+        elif mario.gasok < 0:
+            mario.gasok += 6
 
     clear_canvas()
+    mario.draw()
     grass.draw()
-
+    update_canvas()
     delay(0.05)
 
 close_canvas()
