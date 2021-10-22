@@ -8,6 +8,9 @@ class Boy():
     def __init__(self):
         self.x, self.y = 90, 90
         self.frame = 0
+        self.dash = 1
+        self.air = False
+        self.jump = False
         self.xx, self.yy = 90, 90
         self.image = load_image('run_animation.png')
 
@@ -19,18 +22,23 @@ class Boy():
         self.xx -= 20
     def update_u(self):
         self.frame = (self.frame + 1) % 8
-        self.yy += 20
+        self.yy += 500
+        #self.jump = True
     def update_d(self):
         self.frame = (self.frame + 1) % 8
         self.yy -= 20
     def update(self):
-        for i in range(0, 200, 20):
-            t = i / 100
-            tx, ty = self.x, self.y
-            self.x = (1-t) * tx + t * self.xx
-            self.y = (1-t) * ty + t * self.yy
-            self.draw()
-            update_canvas()
+        if self.jump:
+            for i in range(0, 200, 20):
+                t = i / 100
+                tx, ty = self.x, self.y
+
+        else:
+            for i in range(0, 200, 20):
+                t = i / 100
+                tx, ty = self.x, self.y
+                self.x = (1-t) * tx + t * self.xx
+                self.y = (1-t) * ty + t * self.yy
 
     def draw(self):
         self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
@@ -72,7 +80,41 @@ def handle_events():
         elif event.type == SDL_KEYUP:
             keydown = False
 
+def update_character():
+    global boy
+    global keydown
+    if boy.jump:
+        boy.update()
+    else:
+        if boy.y > 90:
+            boy.yy -= 20
+        boy.update()
+        boy.draw()
+        update_canvas()
+        if keydown:
+            if pre == 0:
+                boy.update_u()
+                boy.update()
+                boy.draw()
+                update_canvas()
+            elif pre == 1:
+                boy.update_l()
+                boy.update()
+                boy.draw()
+                update_canvas()
+            elif pre == 2:
+                boy.update_d()
+                boy.update()
+                boy.draw()
+                update_canvas()
+            elif pre == 3:
+                boy.update_r()
+                boy.update()
+                boy.draw()
+                update_canvas()
 
+
+# xx yy는 내가 움직이는점 x,y좌표는 xx yy를 따라간다.
 open_canvas()
 
 boy = Boy()
@@ -84,20 +126,7 @@ running = True
 while running:
     handle_events()
 
-    boy.update()
-    if keydown:
-        if pre == 0:
-            boy.update_u()
-            boy.update()
-        elif pre == 1:
-            boy.update_l()
-            boy.update()
-        elif pre == 2:
-            boy.update_d()
-            boy.update()
-        elif pre == 3:
-            boy.update_r()
-            boy.update()
+    update_character()
 
     clear_canvas()
     grass.draw()
