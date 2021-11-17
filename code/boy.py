@@ -37,6 +37,11 @@ key_event_table = {
 class IdleState:
 
     def enter(boy, event):
+
+        if event == DASH_DOWN:
+            boy.dash = 2
+        elif event == DASH_UP:
+            boy.dash = 1
         if event == RIGHT_DOWN:
             boy.velocity += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
@@ -48,7 +53,7 @@ class IdleState:
         boy.timer = 1000
 
     def exit(boy, event):
-        if event == JUMP:
+        if event == JUMP and boy.fall == False:
             boy.temp = 7
 
     def do(boy):
@@ -72,6 +77,10 @@ class IdleState:
 class RunState:
 
     def enter(boy, event):
+        if event == DASH_DOWN:
+            boy.dash = 2
+        elif event == DASH_UP:
+            boy.dash = 1
         if event == RIGHT_DOWN:
             boy.velocity += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
@@ -80,17 +89,19 @@ class RunState:
             boy.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
+
         boy.dir = clamp(-1, boy.velocity, 1)
 
     def exit(boy, event):
-        if event == JUMP:
+        if event == JUMP and boy.fall == False:
             boy.temp = 7
 
 
     def do(boy):
         #boy.frame = (boy.frame + 1) % 8
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-        boy.x += boy.velocity * game_framework.frame_time
+        boy.x += boy.velocity * game_framework.frame_time * boy.dash
+        print('runpps=' , RUN_SPEED_PPS)
         boy.x = clamp(25, boy.x, 1600 - 25)
         if boy.temp > 0:
             if boy.velocity > 0:
@@ -106,7 +117,6 @@ class RunState:
             boy.image.clip_draw(int(boy.frame) * 100, 100, 100, 100, boy.x, boy.y)
         else:
             boy.image.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
-
 
 class SleepState:
 
@@ -151,6 +161,7 @@ class Boy:
         self.cur_state.enter(self, None)
         self.temp = 0
         self.fall = False
+        self.dash = 1
 
     def get_bb(self):
         # fill here
