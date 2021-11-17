@@ -62,10 +62,10 @@ class IdleState:
         if boy.timer == 0:
             boy.add_event(SLEEP_TIMER)
         if boy.temp > 0:
-            boy.y += 20 + (boy.velocity * game_framework.frame_time)
+            boy.y += 30 + (boy.velocity * game_framework.frame_time)
             boy.temp -= 1
         if boy.fall == True and boy.temp == 0:
-            boy.y -= 8
+            boy.y -= 12
 
     def draw(boy):
         if boy.dir == 1:
@@ -105,12 +105,12 @@ class RunState:
         boy.x = clamp(25, boy.x, 1600 - 25)
         if boy.temp > 0:
             if boy.velocity > 0:
-                boy.y += 20 + (boy.velocity * game_framework.frame_time * boy.dash)
+                boy.y += 30 + (boy.velocity * game_framework.frame_time * boy.dash)
             else:
-                boy.y += 20 + (-boy.velocity * game_framework.frame_time * boy.dash)
+                boy.y += 30 + (-boy.velocity * game_framework.frame_time * boy.dash)
             boy.temp -= 1
         if boy.fall == True and boy.temp == 0:
-            boy.y -= 8
+            boy.y -= 12
 
     def draw(boy):
         if boy.dir == 1:
