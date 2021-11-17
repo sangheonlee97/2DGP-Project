@@ -6,7 +6,7 @@ from pico2d import *
 import game_framework
 import game_world
 
-from boy import Boy
+from mario import Mario
 from grass import Grass
 from ball import Ball
 from gamba import Gamba
@@ -14,7 +14,7 @@ from turtle import Turtle
 
 name = "MainState"
 
-boy = None
+mario = None
 grass = None
 gambas = []
 turtles = []
@@ -50,9 +50,9 @@ def collide_mob(a, b):
 
 
 def enter():
-    global boy
-    boy = Boy()
-    game_world.add_object(boy, 1)
+    global mario
+    mario = Mario()
+    game_world.add_object(mario, 1)
 
     global grass
     grass = Grass()
@@ -88,35 +88,35 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
         else:
-            boy.handle_event(event)
+            mario.handle_event(event)
 
 
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
-    if boy.y >= 90:
-        boy.fall = True
+    if mario.y >= 90:
+        mario.fall = True
     else:
-        boy.fall = False
-    # if collide(boy, grass):
-    #     boy.fall = False
+        mario.fall = False
+    # if collide(mario, grass):
+    #     mario.fall = False
     # else:
-    #     boy.fall = True
+    #     mario.fall = True
 
     for gamba in gambas:
-        #if collide(boy, gamba):
-        if collide_mob(boy, gamba):
-            boy.y += 100
-            boy.temp += 1
+        #if collide(mario, gamba):
+        if collide_mob(mario, gamba):
+            mario.y += 100
+            mario.temp += 1
             gambas.remove(gamba)
             game_world.remove_object(gamba)
 
     for turtle in turtles:
-        #if collide(boy, gamba):
-        if collide_mob(boy, turtle):
+        #if collide(mario, gamba):
+        if collide_mob(mario, turtle):
             if turtle.life == 1:
-                boy.y += 100
-                boy.temp += 1
+                mario.y += 100
+                mario.temp += 1
 
             turtle.life = 0
 

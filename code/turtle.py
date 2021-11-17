@@ -2,7 +2,7 @@ import random
 from pico2d import *
 import game_world
 import game_framework
-from boy import *
+from mario import *
 
 class Turtle:
 
@@ -36,3 +36,5 @@ class Turtle:
         else:
             self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
         self.x += 20 * game_framework.frame_time
+        if self.life == 0:
+            self.x += 40 * game_framework.frame_time

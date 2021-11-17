@@ -3,7 +3,17 @@
   <component name="ChangeListManager">
     <list default="true" id="192e6527-84ae-416e-a718-cef6d2861155" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/animation_sheet.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/ball21x21.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/ball41x41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/bird100x100x14.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/code/boy.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/boy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/brick180x40.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/character.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/turtle.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/turtle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/png/block.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/png/gamba.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/png/turtle.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +109,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/code/boy.py</url>
-          <line>172</line>
+          <line>171</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
