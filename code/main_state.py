@@ -8,7 +8,6 @@ import game_world
 
 from mario import Mario
 from grass import Grass
-from ball import Ball
 from gamba import Gamba
 from turtle import Turtle
 

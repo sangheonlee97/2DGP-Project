@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="192e6527-84ae-416e-a718-cef6d2861155" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/code/ball.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/globals.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/main_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/main_state.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/mario.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/mario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/turtle.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/turtle.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
