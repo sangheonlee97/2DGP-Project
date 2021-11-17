@@ -60,11 +60,11 @@ def enter():
 
 
     global gambas
-    gambas = [Gamba() for i in range(10)]
+    gambas = [Gamba() for i in range(5)]
     game_world.add_objects(gambas, 1)
 
     global turtles
-    turtles = [Turtle() for i in range(10)]
+    turtles = [Turtle() for i in range(5)]
 
     game_world.add_objects(turtles, 1)
 

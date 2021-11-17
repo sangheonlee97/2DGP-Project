@@ -71,19 +71,19 @@ class IdleState:
         if mario.jump > 0:
             if mario.dir == 1:
                 mario.image.clip_composite_draw(2 * 27, mario.life * 52, 27, 52 - 14 * mario.life, 0,
-                                                'h', mario.x, mario.y - 15, 27, 52 - 14 * mario.life)  # 작을때 키 38, 클때 52
+                                                'h', mario.x, mario.y - 8 - 7 * mario.life, 27, 52 - 14 * mario.life)  # 작을때 키 38, 클때 52
 
             else:
                 mario.image.clip_draw(2 * 27, mario.life * 52, 27, 52 - 14 * mario.life, mario.x,
-                                      mario.y - 15)  # 작을때 키 38, 클때 52
+                                      mario.y - 8 - 7 * mario.life)  # 작을때 키 38, 클때 52
         else:
             if mario.dir == 1:
                 mario.image.clip_composite_draw(int(mario.frame) * 27, mario.life * 52, 27, 52 - 14 * mario.life, 0,
-                                                'h', mario.x, mario.y - 15, 27, 52 - 14 * mario.life)  # 작을때 키 38, 클때 52
+                                                'h', mario.x, mario.y - 8 - 7 * mario.life, 27, 52 - 14 * mario.life)  # 작을때 키 38, 클때 52 8
 
             else:
                 mario.image.clip_draw(int(mario.frame) * 27, mario.life * 52, 27, 52 - 14 * mario.life, mario.x,
-                                      mario.y - 15)  # 작을때 키 38, 클때 52
+                                      mario.y - 8 - 7 * mario.life)  # 작을때 키 38, 클때 52 8
 
 
 class RunState:
@@ -127,29 +127,29 @@ class RunState:
         if mario.jump > 0:
             if mario.dir == 1:
                 mario.image.clip_composite_draw(2 * 27, mario.life * 52, 27, 52 - 14 * mario.life, 0,
-                                                'h', mario.x, mario.y - 15, 27,
+                                                'h', mario.x, mario.y - 8 - 7 * mario.life, 27,
                                                 52 - 14 * mario.life)  # 작을때 키 38, 클때 52
             else:
                 mario.image.clip_draw(2 * 27, mario.life * 52, 27, 52 - 14 * mario.life, mario.x,
-                                      mario.y - 15)  # 작을때 키 38, 클때 52
+                                      mario.y - 8 - 7 * mario.life)  # 작을때 키 38, 클때 52
         else:
             if mario.dash == 1:
                 if mario.dir == 1:
                     mario.image.clip_composite_draw(int(mario.frame) * 27, mario.life * 52, 27, 52 - 14 * mario.life, 0,
-                                                    'h', mario.x, mario.y - 15, 27,
+                                                    'h', mario.x, mario.y - 8 - 7 * mario.life, 27,
                                                     52 - 14 * mario.life)  # 작을때 키 38, 클때 52
                 else:
                     mario.image.clip_draw(int(mario.frame) * 27, mario.life * 52, 27, 52 - 14 * mario.life, mario.x,
-                                          mario.y - 15)  # 작을때 키 38, 클때 52
+                                          mario.y - 8 - 7 * mario.life)  # 작을때 키 38, 클때 52
             else:
                 if mario.dir == 1:
                     mario.image.clip_composite_draw((int(mario.frame) * 2 + 1) * 27, mario.life * 52, 27,
-                                                    52 - 14 * mario.life, 0, 'h', mario.x, mario.y - 15, 27,
+                                                    52 - 14 * mario.life, 0, 'h', mario.x, mario.y - 8 - 7 * mario.life, 27,
                                                     52 - 14 * mario.life)  # 작을때 키 38, 클때 52
 
                 else:
                     mario.image.clip_draw((int(mario.frame) * 2 + 1) * 27, mario.life * 52, 27, 52 - 14 * mario.life,
-                                          mario.x, mario.y - 15)  # 작을때 키 38, 클때 52
+                                          mario.x, mario.y - 8 - 7 * mario.life)  # 작을때 키 38, 클때 52
 
 
 class SleepState:
@@ -198,8 +198,10 @@ class Mario:
         self.life = 0
 
     def get_bb(self):
-        # fill here
-        return self.x - 20, self.y - 35, self.x + 20, self.y + 40
+        if self.life == 1:
+            return self.x - 15, self.y - 35, self.x + 13, self.y + 4
+        else:
+            return self.x - 15, self.y - 35, self.x + 13, self.y + 18
 
 
     def add_event(self, event):
