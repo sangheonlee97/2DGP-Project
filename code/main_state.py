@@ -107,7 +107,7 @@ def update():
         #if collide(mario, gamba):
         if collide_mob(mario, gamba):
             mario.y += 100
-            mario.temp += 1
+            mario.jump += 1
             gambas.remove(gamba)
             game_world.remove_object(gamba)
 
@@ -116,7 +116,7 @@ def update():
         if collide_mob(mario, turtle):
             if turtle.life == 1:
                 mario.y += 100
-                mario.temp += 1
+                mario.jump += 1
 
             turtle.life = 0
 

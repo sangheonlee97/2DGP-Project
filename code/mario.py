@@ -54,27 +54,36 @@ class IdleState:
 
     def exit(mario, event):
         if event == JUMP and mario.fall == False:
-            mario.temp = 7
+            mario.jump = 7
 
     def do(mario):
         mario.frame = 0
         mario.timer -= 1
         if mario.timer == 0:
             mario.add_event(SLEEP_TIMER)
-        if mario.temp > 0:
+        if mario.jump > 0:
             mario.y += 30 + (mario.velocity * game_framework.frame_time)
-            mario.temp -= 1
-        if mario.fall == True and mario.temp == 0:
+            mario.jump -= 1
+        if mario.fall == True and mario.jump == 0:
             mario.y -= 12
 
     def draw(mario):
-        if mario.dir == 1:
-            mario.image.clip_composite_draw(int(mario.frame) * 30, mario.life * 52, 27, 52 - 14 * mario.life, 0, 'h', mario.x, mario.y-15, 27, 52 - 14 * mario.life)  # 작을때 키 38, 클때 52
+        if mario.jump > 0:
+            if mario.dir == 1:
+                mario.image.clip_composite_draw(2 * 27, mario.life * 52, 27, 52 - 14 * mario.life, 0,
+                                                'h', mario.x, mario.y - 15, 27, 52 - 14 * mario.life)  # 작을때 키 38, 클때 52
 
+            else:
+                mario.image.clip_draw(2 * 27, mario.life * 52, 27, 52 - 14 * mario.life, mario.x,
+                                      mario.y - 15)  # 작을때 키 38, 클때 52
         else:
-            mario.image.clip_draw(int(mario.frame) * 30, mario.life * 52, 27, 52 - 14 * mario.life, mario.x, mario.y - 15)  # 작을때 키 38, 클때 52
+            if mario.dir == 1:
+                mario.image.clip_composite_draw(int(mario.frame) * 27, mario.life * 52, 27, 52 - 14 * mario.life, 0,
+                                                'h', mario.x, mario.y - 15, 27, 52 - 14 * mario.life)  # 작을때 키 38, 클때 52
 
-
+            else:
+                mario.image.clip_draw(int(mario.frame) * 27, mario.life * 52, 27, 52 - 14 * mario.life, mario.x,
+                                      mario.y - 15)  # 작을때 키 38, 클때 52
 
 
 class RunState:
@@ -97,7 +106,7 @@ class RunState:
 
     def exit(mario, event):
         if event == JUMP and mario.fall == False:
-            mario.temp = 7
+            mario.jump = 7
 
 
     def do(mario):
@@ -105,28 +114,42 @@ class RunState:
         mario.frame = (mario.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
         mario.x += mario.velocity * game_framework.frame_time * mario.dash
         mario.x = clamp(25, mario.x, 1600 - 25)
-        if mario.temp > 0:
+        if mario.jump > 0:
             if mario.velocity > 0:
                 mario.y += 30 + (mario.velocity * game_framework.frame_time * mario.dash)
             else:
                 mario.y += 30 + (-mario.velocity * game_framework.frame_time * mario.dash)
-            mario.temp -= 1
-        if mario.fall == True and mario.temp == 0:
+            mario.jump -= 1
+        if mario.fall == True and mario.jump == 0:
             mario.y -= 12
 
     def draw(mario):
-        if mario.dash == 1:
+        if mario.jump > 0:
             if mario.dir == 1:
-                mario.image.clip_composite_draw(int(mario.frame) * 27, mario.life * 52, 27, 52 - 14 * mario.life, 0, 'h', mario.x, mario.y-15, 27, 52 - 14 * mario.life)  # 작을때 키 38, 클때 52
+                mario.image.clip_composite_draw(2 * 27, mario.life * 52, 27, 52 - 14 * mario.life, 0,
+                                                'h', mario.x, mario.y - 15, 27,
+                                                52 - 14 * mario.life)  # 작을때 키 38, 클때 52
             else:
-                mario.image.clip_draw(int(mario.frame) * 27, mario.life * 52, 27, 52 - 14 * mario.life, mario.x, mario.y - 15)  # 작을때 키 38, 클때 52
+                mario.image.clip_draw(2 * 27, mario.life * 52, 27, 52 - 14 * mario.life, mario.x,
+                                      mario.y - 15)  # 작을때 키 38, 클때 52
         else:
-            if mario.dir == 1:
-                mario.image.clip_composite_draw((int(mario.frame) * 2 + 1) * 27, mario.life * 52, 27, 52 - 14 * mario.life, 0, 'h', mario.x, mario.y-15, 27, 52 - 14 * mario.life)  # 작을때 키 38, 클때 52
-
+            if mario.dash == 1:
+                if mario.dir == 1:
+                    mario.image.clip_composite_draw(int(mario.frame) * 27, mario.life * 52, 27, 52 - 14 * mario.life, 0,
+                                                    'h', mario.x, mario.y - 15, 27,
+                                                    52 - 14 * mario.life)  # 작을때 키 38, 클때 52
+                else:
+                    mario.image.clip_draw(int(mario.frame) * 27, mario.life * 52, 27, 52 - 14 * mario.life, mario.x,
+                                          mario.y - 15)  # 작을때 키 38, 클때 52
             else:
-                mario.image.clip_draw((int(mario.frame) * 2 + 1) * 27, mario.life * 52, 27, 52 - 14 * mario.life, mario.x, mario.y - 15)  # 작을때 키 38, 클때 52
+                if mario.dir == 1:
+                    mario.image.clip_composite_draw((int(mario.frame) * 2 + 1) * 27, mario.life * 52, 27,
+                                                    52 - 14 * mario.life, 0, 'h', mario.x, mario.y - 15, 27,
+                                                    52 - 14 * mario.life)  # 작을때 키 38, 클때 52
 
+                else:
+                    mario.image.clip_draw((int(mario.frame) * 2 + 1) * 27, mario.life * 52, 27, 52 - 14 * mario.life,
+                                          mario.x, mario.y - 15)  # 작을때 키 38, 클때 52
 
 
 class SleepState:
@@ -169,19 +192,14 @@ class Mario:
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
-        self.temp = 0
+        self.jump = 0
         self.fall = False
         self.dash = 1
-        self.life = 1
+        self.life = 0
 
     def get_bb(self):
         # fill here
         return self.x - 20, self.y - 35, self.x + 20, self.y + 40
-
-
-    def fire_ball(self):
-        ball = Ball(self.x, self.y, self.dir * RUN_SPEED_PPS * 10)
-        game_world.add_object(ball, 1)
 
 
     def add_event(self, event):
