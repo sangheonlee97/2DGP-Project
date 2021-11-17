@@ -37,4 +37,4 @@ class Turtle:
             self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
         self.x += 20 * game_framework.frame_time
         if self.life == 0:
-            self.x += 40 * game_framework.frame_time
+            self.x += 80 * game_framework.frame_time

@@ -54,7 +54,7 @@ class IdleState:
 
     def exit(mario, event):
         if event == JUMP and mario.fall == False:
-            mario.jump = 7
+            mario.jump = 13
 
     def do(mario):
         mario.frame = 0
@@ -62,10 +62,10 @@ class IdleState:
         if mario.timer == 0:
             mario.add_event(SLEEP_TIMER)
         if mario.jump > 0:
-            mario.y += 30 + (mario.velocity * game_framework.frame_time)
+            mario.y += 15 + (mario.velocity * game_framework.frame_time)
             mario.jump -= 1
         if mario.fall == True and mario.jump == 0:
-            mario.y -= 12
+            mario.y -= 7
 
     def draw(mario):
         if mario.jump > 0:
@@ -106,22 +106,22 @@ class RunState:
 
     def exit(mario, event):
         if event == JUMP and mario.fall == False:
-            mario.jump = 7
+            mario.jump = 13
 
 
     def do(mario):
         #mario.frame = (mario.frame + 1) % 8
         mario.frame = (mario.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
-        mario.x += mario.velocity * game_framework.frame_time * mario.dash
+        mario.x += mario.velocity * game_framework.frame_time * mario.dash * 1.5
         mario.x = clamp(25, mario.x, 1600 - 25)
         if mario.jump > 0:
             if mario.velocity > 0:
-                mario.y += 30 + (mario.velocity * game_framework.frame_time * mario.dash)
+                mario.y += 15 + (mario.velocity * game_framework.frame_time * mario.dash)
             else:
-                mario.y += 30 + (-mario.velocity * game_framework.frame_time * mario.dash)
+                mario.y += 15 + (-mario.velocity * game_framework.frame_time * mario.dash)
             mario.jump -= 1
         if mario.fall == True and mario.jump == 0:
-            mario.y -= 12
+            mario.y -= 7
 
     def draw(mario):
         if mario.jump > 0:
