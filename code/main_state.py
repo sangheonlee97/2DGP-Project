@@ -9,6 +9,8 @@ import game_world
 from boy import Boy
 from grass import Grass
 from ball import Ball
+from gamba import Gamba
+from turtle import Turtle
 
 name = "MainState"
 
@@ -16,6 +18,8 @@ boy = None
 grass = None
 balls = []
 big_balls = []
+gambas = []
+turtles = []
 
 
 def collide(a, b):
@@ -30,7 +34,21 @@ def collide(a, b):
 
     return True
 
+def collide_mob(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
 
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+
+    if left_a < right_b: print('1')
+    if right_a > left_b: print('12')
+    if top_a > bottom_b: print('13')
+    if bottom_a < top_b: print('14')
+
+    return True
 
 
 def enter():
@@ -47,7 +65,14 @@ def enter():
     balls = [Ball() for i in range(10)]
     game_world.add_objects(balls, 1)
 
+    global gambas
+    gambas = [Gamba() for i in range(10)]
+    game_world.add_objects(gambas, 1)
 
+    global turtles
+    turtles = [Turtle() for i in range(10)]
+
+    game_world.add_objects(turtles, 1)
 
 
 def exit():
@@ -83,11 +108,29 @@ def update():
     #     boy.fall = False
     # else:
     #     boy.fall = True
-    # fill here for collision check
     for ball in balls:
         if collide(boy, ball):
+
             balls.remove(ball)
             game_world.remove_object(ball)
+    for gamba in gambas:
+        #if collide(boy, gamba):
+        if collide_mob(boy, gamba):
+            boy.y += 100
+            boy.temp += 1
+            gambas.remove(gamba)
+            game_world.remove_object(gamba)
+
+    for turtle in turtles:
+        #if collide(boy, gamba):
+        if collide_mob(boy, turtle):
+            if turtle.life == 1:
+                boy.y += 100
+                boy.temp += 1
+
+            turtle.life = 0
+
+
 
 
 def draw():

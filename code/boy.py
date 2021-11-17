@@ -101,7 +101,6 @@ class RunState:
         #boy.frame = (boy.frame + 1) % 8
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         boy.x += boy.velocity * game_framework.frame_time * boy.dash
-        print('runpps=' , RUN_SPEED_PPS)
         boy.x = clamp(25, boy.x, 1600 - 25)
         if boy.temp > 0:
             if boy.velocity > 0:
@@ -150,7 +149,6 @@ class Boy:
 
     def __init__(self):
         self.x, self.y = 1600 // 2, 90
-        # Boy is only once created, so instance image loading is fine
         self.image = load_image('animation_sheet.png')
         self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
@@ -186,7 +184,7 @@ class Boy:
 
     def draw(self):
         self.cur_state.draw(self)
-        self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255, 255, 0))
+        self.font.draw(1400, 550, '(Time: %3.2f)' % get_time(), (1, 1, 1))
         draw_rectangle(*self.get_bb())
 
 
