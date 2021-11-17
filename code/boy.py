@@ -57,7 +57,7 @@ class IdleState:
             boy.temp = 7
 
     def do(boy):
-        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        boy.frame = 0
         boy.timer -= 1
         if boy.timer == 0:
             boy.add_event(SLEEP_TIMER)
@@ -69,9 +69,12 @@ class IdleState:
 
     def draw(boy):
         if boy.dir == 1:
-            boy.image.clip_draw(int(boy.frame) * 100, 300, 100, 100, boy.x, boy.y)
+            boy.image.clip_composite_draw(int(boy.frame) * 30, boy.life * 52, 27, 52 - 14 * boy.life, 0, 'h', boy.x, boy.y-15, 27, 52 - 14 * boy.life)  # 작을때 키 38, 클때 52
+
         else:
-            boy.image.clip_draw(int(boy.frame) * 100, 200, 100, 100, boy.x, boy.y)
+            boy.image.clip_draw(int(boy.frame) * 30, boy.life * 52, 27, 52 - 14 * boy.life, boy.x, boy.y - 15)  # 작을때 키 38, 클때 52
+
+
 
 
 class RunState:
@@ -99,7 +102,7 @@ class RunState:
 
     def do(boy):
         #boy.frame = (boy.frame + 1) % 8
-        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
         boy.x += boy.velocity * game_framework.frame_time * boy.dash
         boy.x = clamp(25, boy.x, 1600 - 25)
         if boy.temp > 0:
@@ -112,10 +115,19 @@ class RunState:
             boy.y -= 12
 
     def draw(boy):
-        if boy.dir == 1:
-            boy.image.clip_draw(int(boy.frame) * 100, 100, 100, 100, boy.x, boy.y)
+        if boy.dash == 1:
+            if boy.dir == 1:
+                boy.image.clip_composite_draw(int(boy.frame) * 27, boy.life * 52, 27, 52 - 14 * boy.life, 0, 'h', boy.x, boy.y-15, 27, 52 - 14 * boy.life)  # 작을때 키 38, 클때 52
+            else:
+                boy.image.clip_draw(int(boy.frame) * 27, boy.life * 52, 27, 52 - 14 * boy.life, boy.x, boy.y - 15)  # 작을때 키 38, 클때 52
         else:
-            boy.image.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
+            if boy.dir == 1:
+                boy.image.clip_composite_draw((int(boy.frame) * 2 + 1) * 27, boy.life * 52, 27, 52 - 14 * boy.life, 0, 'h', boy.x, boy.y-15, 27, 52 - 14 * boy.life)  # 작을때 키 38, 클때 52
+
+            else:
+                boy.image.clip_draw((int(boy.frame) * 2 + 1) * 27, boy.life * 52, 27, 52 - 14 * boy.life, boy.x, boy.y - 15)  # 작을때 키 38, 클때 52
+
+
 
 class SleepState:
 
@@ -149,7 +161,7 @@ class Boy:
 
     def __init__(self):
         self.x, self.y = 1600 // 2, 90
-        self.image = load_image('animation_sheet.png')
+        self.image = load_image('mario2.png')
         self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
         self.velocity = 0
@@ -160,6 +172,7 @@ class Boy:
         self.temp = 0
         self.fall = False
         self.dash = 1
+        self.life = 1
 
     def get_bb(self):
         # fill here

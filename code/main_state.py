@@ -16,8 +16,6 @@ name = "MainState"
 
 boy = None
 grass = None
-balls = []
-big_balls = []
 gambas = []
 turtles = []
 
@@ -43,10 +41,10 @@ def collide_mob(a, b):
     if top_a < bottom_b: return False
     if bottom_a > top_b: return False
 
-    if left_a < right_b: print('1')
-    if right_a > left_b: print('12')
-    if top_a > bottom_b: print('13')
-    if bottom_a < top_b: print('14')
+    # if left_a < right_b: print('1')
+    # if right_a > left_b: print('12')
+    # if top_a > bottom_b: print('13')
+    # if bottom_a < top_b: print('14')
 
     return True
 
@@ -60,10 +58,6 @@ def enter():
     grass = Grass()
     game_world.add_object(grass, 0)
 
-    # fill here for balls
-    global balls
-    balls = [Ball() for i in range(10)]
-    game_world.add_objects(balls, 1)
 
     global gambas
     gambas = [Gamba() for i in range(10)]
@@ -108,11 +102,7 @@ def update():
     #     boy.fall = False
     # else:
     #     boy.fall = True
-    for ball in balls:
-        if collide(boy, ball):
 
-            balls.remove(ball)
-            game_world.remove_object(ball)
     for gamba in gambas:
         #if collide(boy, gamba):
         if collide_mob(boy, gamba):
