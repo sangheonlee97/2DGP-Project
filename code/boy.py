@@ -105,9 +105,9 @@ class RunState:
         boy.x = clamp(25, boy.x, 1600 - 25)
         if boy.temp > 0:
             if boy.velocity > 0:
-                boy.y += 20 + (boy.velocity * game_framework.frame_time)
+                boy.y += 20 + (boy.velocity * game_framework.frame_time * boy.dash)
             else:
-                boy.y += 20 + (-boy.velocity * game_framework.frame_time)
+                boy.y += 20 + (-boy.velocity * game_framework.frame_time * boy.dash)
             boy.temp -= 1
         if boy.fall == True and boy.temp == 0:
             boy.y -= 8
